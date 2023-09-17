@@ -1,0 +1,22 @@
+version: "1.0"
+
+services:
+  server:
+    image: "image-server"
+    container_name: "server"
+    build: ./server
+    command: uvicorn main:app --port=8000
+    restart: on-failure
+    ports:
+      - "8000:8000"
+
+  client:
+    image: "image-client"
+    container_name: "client"
+    build: ./client
+    command: python3 client.py
+    restart: on-failure
+    environment:
+      PYTHONUNBUFFERED: 1
+    depends_on:
+      - server
